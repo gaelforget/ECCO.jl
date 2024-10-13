@@ -3,6 +3,14 @@ uuid = "485acfd6-c8ad-4ff9-b233-a5c7cab2dfb0"
 authors = ["gaelforget <gforget@mit.edu> and contributors"]
 version = "0.0.1"
 
+[deps]
+AirSeaFluxes = "3dfee02d-11ce-464a-9ee1-cf3f5c5ccad7"
+Climatology = "9e9a4d37-2d2e-41e3-8b85-f7978328d9c7"
+Enzyme = "7da242da-08ed-463a-9acd-ee780be4f1d9"
+MITgcm = "dce5fa8e-68ce-4431-a242-9469c69627a0"
+MeshArrays = "cb8c808f-1acf-59a3-9d2b-6e38d009f683"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+
 [compat]
 julia = "1.9"
 
