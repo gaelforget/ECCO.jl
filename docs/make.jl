@@ -4,7 +4,7 @@ using Documenter
 DocMeta.setdocmeta!(ECCO, :DocTestSetup, :(using ECCO); recursive=true)
 
 makedocs(;
-    modules=[ECCO],
+    modules=[ECCO,ECCO.toy_problems],
     authors="gaelforget <gforget@mit.edu> and contributors",
     sitename="ECCO.jl",
     format=Documenter.HTML(;
@@ -15,6 +15,7 @@ makedocs(;
     pages=[
         "Home" => "index.md",
     ],
+    warnonly = [:cross_references,:missing_docs],
 )
 
 deploydocs(;
