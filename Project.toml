@@ -12,6 +12,12 @@ MeshArrays = "cb8c808f-1acf-59a3-9d2b-6e38d009f683"
 Optim = "429524aa-4258-5aef-a3af-852621145aeb"
 
 [compat]
+AirSeaFluxes = "0.1"
+Climatology = "0.5"
+Enzyme = "0.13"
+MITgcm = "0.5"
+MeshArrays = "0.3"
+Optim = "1"
 julia = "1.9"
 
 [extras]
