@@ -1,7 +1,7 @@
 
 module toy_problems
 
-import Enzyme
+import Enzyme, Optim
 import AirSeaFluxes
 
 #export enzyme_ex1, enzyme_ex2, enzyme_ex3, enzyme_ex4
@@ -104,5 +104,35 @@ f_ad(x,y)
 ```    
 """
 enzyme_ex4() = (f_hl,f_hl_ad,[300.,0.001,1.,10.],[0.0])
+
+## Optim
+
+"""
+    ECCO.toy_problems.optim_ex1()
+
+```
+using ECCO
+(f,x0,x1,result)=ECCO.toy_problems.optim_ex1()
+```
+"""
+function optim_ex1()
+    f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
+    x0 = [0.0, 0.0]
+    result=Optim.optimize(f, x0)
+    x1=Optim.minimizer(result)
+    f,x0,x1,result
+end
+
+function optim_ex2()
+    f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
+    function g!(G,x)
+        G[1] = -2.0 * (1.0 - x[1]) - 400.0 * (x[2] - x[1]^2) * x[1]
+        G[2] = 200.0 * (x[2] - x[1]^2)
+    end
+    x0 = [0.0, 0.0]
+    result=Optim.optimize(f,g!,x0)
+    x1=Optim.minimizer(result)
+    f,g!,x0,x1,result
+end
 
 end

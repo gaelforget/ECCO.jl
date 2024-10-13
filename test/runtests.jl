@@ -10,5 +10,12 @@ using Test
     fc=f(x,y)
     adx=f_ad(x,y);
     @test isa(adx,Vector)
-    
+
+    (f,x0,x1,result)=ECCO.toy_problems.optim_ex1()
+    dx=1e-4*(x0-x1)
+    @test f(x1)<f(x1+dx)
+
+    (f,g!,x0,x1,result)=ECCO.toy_problems.optim_ex2()
+    dx=1e-4*(x0-x1)
+    @test f(x1)<f(x1+dx)
 end
