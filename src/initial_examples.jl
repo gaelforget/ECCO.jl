@@ -135,4 +135,22 @@ function optim_ex2()
     f,g!,x0,x1,result
 end
 
+function optim_ex3()
+    function optim_ex3()
+        h(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
+        function h!(bx2, x) 
+            bx = zeros(size(x))
+            Enzyme.autodiff(Reverse, h, Duplicated(x, bx))
+            bx2 .= bx
+        end
+        x0 = [0.0, 0.0]
+        H = zeros(2)
+        h!(H,x0)
+    
+        result=Optim.optimize(h,h!,x0)
+        x1=Optim.minimizer(result)
+        h,h!,x0,x1,result
+    end
+end
+
 end
