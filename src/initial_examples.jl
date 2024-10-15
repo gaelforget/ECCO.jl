@@ -136,7 +136,6 @@ function optim_ex2()
 end
 
 function optim_ex3()
-    function optim_ex3()
         h(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
         function h!(bx2, x) 
             bx = zeros(size(x))
@@ -150,7 +149,6 @@ function optim_ex3()
         result=Optim.optimize(h,h!,x0)
         x1=Optim.minimizer(result)
         h,h!,x0,x1,result
-    end
 end
 
 end
