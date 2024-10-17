@@ -1,5 +1,5 @@
 
-module toy_models
+module toy_model_glacier
 
 @inline function update_h(h::Float64, b::Float64)
 	if h < b
