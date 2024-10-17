@@ -18,4 +18,7 @@ using Test
     (f,g!,x0,x1,result)=ECCO.toy_problems.optim_ex2()
     dx=1e-4*(x0-x1)
     @test f(x1)<f(x1+dx)
+
+    V=ECCO.toy_models.glacier1D()
+    @test isapprox(V,12.364982412145055)
 end

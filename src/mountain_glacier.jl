@@ -1,18 +1,24 @@
-using Printf
-using Statistics
-using Plots
+
+module toy_models
 
 @inline function update_h(h::Float64, b::Float64)
-
 	if h < b
 		h = b
 	end
 	return h
-
 end
 
-function forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64, dt::Float64, tend::Float64)
+"""
+    forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64, 
+					dt::Float64, tend::Float64)
 
+Simple, 1D mountain glacier model inspired from the book Fundamentals of Glacier Dynamics, 
+by CJ van der Veen, and which was translated to Julia by S Gaikwad.
+
+See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
+"""
+function forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64, 
+						dt::Float64, tend::Float64)
 	rho = 920.0
 	g = 9.2
 	n = 3
@@ -39,7 +45,6 @@ function forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64, dt::Flo
 	h_capital .= h .- b
 
 	for t in 1:nt
-
 		D .= C .* ((h_capital[1:nx] .+ h_capital[2:nx+1]) ./ 2.0).^(n+2) .* ((h[2:nx+1] .- h[1:nx]) ./ dx).^(n-1)
 		phi .= -D .* (h[2:nx+1] .- h[1:nx]) ./ dx
 
@@ -47,23 +52,22 @@ function forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64, dt::Flo
 		h[2:nx] .= update_h.(h[2:nx], b[2:nx])
 
 		h_capital .= h .- b
-
 	end
 
 	V = sum(Array(h_capital[1:nx+1].*dx))
-
 	return V
-
 end
 
-dx = 1.0
-xend = 30.0
-dt = 1/12.0
-tend = 5000.0
-nx = Int(round(xend/dx))
+function glacier1D()
+	dx = 1.0
+	xend = 30.0
+	dt = 1/12.0
+	tend = 5000.0
+	nx = Int(round(xend/dx))
 
-xx = zeros(nx+1)
-∂V_∂xx=zero(xx)
+	xx = zeros(nx+1)
+	forward_problem(xx, nx, dx, xend, dt, tend)
+end
 
-@show V = forward_problem(xx, nx, dx, xend, dt, tend)
+end
 
