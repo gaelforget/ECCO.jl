@@ -11,6 +11,10 @@ using Test
     adx=f_ad(x,y);
     @test isa(adx,Vector)
 
+    ECCO.toy_problems.f_tau([300.,0.001,1.,10.],[0.0])
+    adx=ECCO.toy_problems.f_tau_ad([300.,0.001,1.,10.],[0.0])
+    @test isa(adx,Vector)
+
     (f,x0,x1,result)=ECCO.toy_problems.optim_ex1()
     dx=1e-4*(x0-x1)
     @test f(x1)<f(x1+dx)
@@ -19,6 +23,12 @@ using Test
     dx=1e-4*(x0-x1)
     @test f(x1)<f(x1+dx)
 
+    (f,g!,x0,x1,result)=ECCO.toy_problems.optim_ex3()
+    dx=1e-4*(x0-x1)
+    @test f(x1)<f(x1+dx)
+
+    ##
+    
     V=ECCO.toy_models.glacier1D()
     @test isapprox(V,12.364982412145055)
 end
