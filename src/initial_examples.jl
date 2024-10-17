@@ -94,7 +94,7 @@ f_ad(x,y)
 enzyme_ex3() = (f_tau,f_tau_ad,[300.,0.001,1.,10.],[0.0])
 
 """
-    ECCO.toy_problems.enzyme_ex3()
+    ECCO.toy_problems.enzyme_ex4()
 
 ```
 using ECCO
@@ -123,6 +123,9 @@ function optim_ex1()
     f,x0,x1,result
 end
 
+"""
+    ECCO.toy_problems.optim_ex2()
+"""
 function optim_ex2()
     f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
     function g!(G,x)
@@ -135,6 +138,9 @@ function optim_ex2()
     f,g!,x0,x1,result
 end
 
+"""
+    ECCO.toy_problems.optim_ex3()
+"""
 function optim_ex3()
         h(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
         function h!(bx2, x) 
