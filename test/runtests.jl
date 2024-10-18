@@ -15,6 +15,8 @@ using Test
     adx=ECCO.toy_problems.f_tau_ad([300.,0.001,1.,10.],[0.0])
     @test isa(adx,Vector)
 
+    ##
+
     (f,x0,x1,result)=ECCO.toy_problems.optim_ex1()
     dx=1e-4*(x0-x1)
     @test f(x1)<f(x1+dx)
@@ -29,6 +31,12 @@ using Test
 
     ##
     
-    V=ECCO.toy_models.glacier1D()
+    V=ECCO.glacier_model.integrate()
     @test isapprox(V,12.364982412145055)
+
+    store=ECCO.Lorenz_models.L96()
+    @test isapprox(store[1,end],-1.334792006090324)
+
+    x,y,z=ECCO.Lorenz_models.L63()
+    @test isapprox(x[end],-13.473664284864503)
 end
