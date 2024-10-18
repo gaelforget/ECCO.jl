@@ -1,9 +1,10 @@
 
 module Lorenz_models
 
-import DynamicalSystems
+#import DynamicalSystems
 
 struct Lorenz96{N} end # Structure for size type
+
 function (obj::Lorenz96{N})(dx, x, p, t) where {N}
     F = p[1]
     # 3 edge cases explicitly (performance)
@@ -18,29 +19,25 @@ function (obj::Lorenz96{N})(dx, x, p, t) where {N}
 end
 
 """
-x, y, z = Lorenz_models.L96()
-plot3D(x, y, z)
+    L96(; N=5, F=8)
+
+```
+using ECCO, CairoMakie
+store=ECCO.Lorenz_models.L96()
+lines(store[1,:]); lines!(store[2,:]); lines!(store[end,:])
+current_figure()
+```
 """
-function L96(N = 5, F = 8.0, P = 0.01)
-    # parameters and initial conditions
-    #N = 5
-    #F = 8.0
-    u₀ = F * ones(N)
-    u₀[1] += P # small perturbation
-
-    # The Lorenz-96 model is predefined in DynamicalSystems.jl:
-    ds = Systems.lorenz96(N; F = F)
-
-    # Equivalently, to define a fast version explicitly, do:
-    lor96 = Lorenz96{N}() # create struct
-    ds = DynamicalSystems.ContinuousDynamicalSystem(lor96, u₀, [F])
-
-    # And now evolve a trajectory
-    dt = 0.01 # sampling time
-    Tf = 30.0 # final time
-    tr = DynamicalSystems.trajectory(ds, Tf; dt = dt)
-
-    columns(tr)
+function L96(; N=5, F=8)
+    L=Lorenz96{N}()
+    x=F*ones(N); x[1] += 0.01 # small perturbation
+    dx=0*x;  t=[0.0]; dt=0.01; nt=1000; store=zeros(N,nt)    
+    for n=1:nt
+        L(dx,x,[F],t)
+        x.=x+dt*dx
+        store[:,n].=x
+    end
+    store    
 end
 
 end
