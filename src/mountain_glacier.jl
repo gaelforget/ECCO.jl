@@ -1,5 +1,5 @@
 
-module toy_model_glacier
+module glacier_model
 
 @inline function update_h(h::Float64, b::Float64)
 	if h < b
@@ -58,7 +58,7 @@ function forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64,
 	return V
 end
 
-function glacier1D()
+function main()
 	dx = 1.0
 	xend = 30.0
 	dt = 1/12.0

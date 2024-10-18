@@ -4,7 +4,7 @@ using Documenter
 DocMeta.setdocmeta!(ECCO, :DocTestSetup, :(using ECCO); recursive=true)
 
 makedocs(;
-    modules=[ECCO,ECCO.toy_problems],
+    modules=[ECCO,ECCO.toy_problems,ECCO.toy_model_glacier,ECCO.Lorenz_models],
     authors="gaelforget <gforget@mit.edu> and contributors",
     sitename="ECCO.jl",
     format=Documenter.HTML(;

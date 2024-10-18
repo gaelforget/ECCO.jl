@@ -31,7 +31,7 @@ using Test
 
     ##
     
-    V=ECCO.toy_model_glacier.glacier1D()
+    V=ECCO.glacier_model.main()
     @test isapprox(V,12.364982412145055)
 
     store=ECCO.Lorenz_models.L96()
