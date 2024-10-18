@@ -1,7 +1,7 @@
 name = "ECCO"
 uuid = "485acfd6-c8ad-4ff9-b233-a5c7cab2dfb0"
 authors = ["gaelforget <gforget@mit.edu> and contributors"]
-version = "0.0.1"
+version = "0.1.0"
 
 [deps]
 AirSeaFluxes = "3dfee02d-11ce-464a-9ee1-cf3f5c5ccad7"
