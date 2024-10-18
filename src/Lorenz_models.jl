@@ -21,6 +21,8 @@ end
 """
     L96(; N=5, F=8)
 
+See https://en.wikipedia.org/wiki/Lorenz_96_model
+
 ```
 using ECCO, CairoMakie
 store=ECCO.Lorenz_models.L96()
@@ -61,6 +63,8 @@ end
 
 """
     L63(; nt=10000)
+
+See https://en.wikipedia.org/wiki/Lorenz_system
 
 ```
 using ECCO, CairoMakie

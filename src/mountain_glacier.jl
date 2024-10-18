@@ -58,7 +58,14 @@ function forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64,
 	return V
 end
 
-function main()
+"""
+    integrate()
+
+```
+V=ECCO.glacier_model.integrate()
+```
+"""
+function integrate()
 	dx = 1.0
 	xend = 30.0
 	dt = 1/12.0
