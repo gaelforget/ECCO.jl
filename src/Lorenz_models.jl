@@ -1,7 +1,7 @@
 
 module Lorenz_models
 
-#import DynamicalSystems
+#Lorenz 1996 model
 
 struct Lorenz96{N} end # Structure for size type
 
@@ -38,6 +38,47 @@ function L96(; N=5, F=8)
         store[:,n].=x
     end
     store    
+end
+
+## Lorenz 1963 
+
+# define the Lorenz63 attractor
+@kwdef mutable struct Lorenz63
+    dt::Float64 = 0.02
+    σ::Float64 = 10
+    ρ::Float64 = 28
+    β::Float64 = 8/3
+    x::Float64 = 2
+    y::Float64 = 1
+    z::Float64 = 1
+end
+
+function step!(l::Lorenz63)
+    dx = l.σ * (l.y - l.x);         l.x += l.dt * dx
+    dy = l.x * (l.ρ - l.z) - l.y;   l.y += l.dt * dy
+    dz = l.x * l.y - l.β * l.z;     l.z += l.dt * dz
+end
+
+"""
+    L63(; nt=10000)
+
+```
+using ECCO, CairoMakie
+x,y,z=ECCO.Lorenz_models.L63()
+lines(x,y)
+```
+"""
+function L63(; nt=10000)
+    attractor = Lorenz63()
+    store=Lorenz63[]
+    for i=1:nt
+        step!(attractor)
+        push!(store,deepcopy(attractor))
+    end
+    x=[store[i].x for i in eachindex(store)]
+    y=[store[i].y for i in eachindex(store)]
+    z=[store[i].z for i in eachindex(store)]
+    return x,y,z
 end
 
 end
