@@ -1,7 +1,7 @@
 
 module toy_problems
 
-import Enzyme, Optim
+import Enzyme, Optim, ForwardDiff
 import AirSeaFluxes
 
 #export enzyme_ex1, enzyme_ex2, enzyme_ex3, enzyme_ex4
@@ -105,6 +105,15 @@ f_ad(x,y)
 """
 enzyme_ex4() = (f_hl,f_hl_ad,[300.,0.001,1.,10.],[0.0])
 
+## ForwardDiff
+
+ForwardDiff_ex1() = begin
+    f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
+    x=[300.,0.001,1.,10.]
+    adx=ForwardDiff.gradient(f, x)
+    (x,adx)
+end
+
 ## Optim
 
 """
@@ -155,6 +164,21 @@ function optim_ex3()
         result=Optim.optimize(h,h!,x0)
         x1=Optim.minimizer(result)
         h,h!,x0,x1,result
+end
+
+end
+
+## Zygote
+
+module Zygote_examples
+
+using Zygote, AirSeaFluxes
+
+Zygote_ex1() = begin
+    f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
+    x=[300.,0.001,1.,10.]
+    adx=f'(x)
+    (x,adx)
 end
 
 end
