@@ -4,22 +4,22 @@ module toy_problems
 import Enzyme, Optim, ForwardDiff
 import AirSeaFluxes
 
-#export enzyme_ex1, enzyme_ex2, enzyme_ex3, enzyme_ex4
+#export Enzyme_ex1, Enzyme_ex2, Enzyme_ex3, Enzyme_ex4
 
 import Enzyme: autodiff, Reverse, Active, Duplicated
 import AirSeaFluxes: simpleflux, bulkformulae
 
 """
-    ECCO.toy_problems.enzyme_ex1()
+    ECCO.toy_problems.Enzyme_ex1()
 
 ```
 using ECCO
-(f,f_ad,x)=ECCO.toy_problems.enzyme_ex1()
+(f,f_ad,x)=ECCO.toy_problems.Enzyme_ex1()
 f(x)
 f_ad(x)
 ```
 """
-function enzyme_ex1()
+function Enzyme_ex1()
     mld=10 #mixed layer depth (m)
     tim=86400*30 #relaxation time scale (s)
     pisvel=mld/tim #piston velocity (m/s)
@@ -37,16 +37,16 @@ end
 ## univariate example 2
 
 """
-    ECCO.toy_problems.enzyme_ex2()
+    ECCO.toy_problems.Enzyme_ex2()
 
 ```
 using ECCO
-(f,f_ad,x)=ECCO.toy_problems.enzyme_ex2()
+(f,f_ad,x)=ECCO.toy_problems.Enzyme_ex2()
 f(x...)
 f_ad(x...)
 ```
 """
-function enzyme_ex2()
+function Enzyme_ex2()
     atemp=300.
     aqh=0.001
     speed=1.
@@ -82,31 +82,39 @@ function f_hl_ad(x=[300.,0.001,1.,10.], y=[0.0])
 end
 
 """
-    ECCO.toy_problems.enzyme_ex3()
+    ECCO.toy_problems.Enzyme_ex3()
 
 ```
 using ECCO
-(f,f_ad,x,y)=ECCO.toy_problems.enzyme_ex3()
+(f,f_ad,x,y)=ECCO.toy_problems.Enzyme_ex3()
 f(x,y)
 f_ad(x,y)
 ```    
 """
-enzyme_ex3() = (f_tau,f_tau_ad,[300.,0.001,1.,10.],[0.0])
+Enzyme_ex3() = (f_tau,f_tau_ad,[300.,0.001,1.,10.],[0.0])
 
 """
-    ECCO.toy_problems.enzyme_ex4()
+    ECCO.toy_problems.Enzyme_ex4()
 
 ```
 using ECCO
-(f,f_ad,x,y)=ECCO.toy_problems.enzyme_ex4()
+(f,f_ad,x,y)=ECCO.toy_problems.Enzyme_ex4()
 f(x,y)
 f_ad(x,y)
 ```    
 """
-enzyme_ex4() = (f_hl,f_hl_ad,[300.,0.001,1.,10.],[0.0])
+Enzyme_ex4() = (f_hl,f_hl_ad,[300.,0.001,1.,10.],[0.0])
 
 ## ForwardDiff
 
+"""
+    ECCO.toy_problems.ForwardDiff_ex1()
+
+```
+using ECCO
+(x,adx)=ECCO.toy_problems.ForwardDiff_ex1()
+```
+"""
 ForwardDiff_ex1() = begin
     f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
     x=[300.,0.001,1.,10.]
@@ -174,6 +182,14 @@ module Zygote_examples
 
 using Zygote, AirSeaFluxes
 
+"""
+    ECCO.toy_problems.Zygote_ex1()
+
+```
+using ECCO
+(x,adx)=ECCO.Zygote_examples.Zygote_ex1()
+```
+"""
 Zygote_ex1() = begin
     f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
     x=[300.,0.001,1.,10.]
