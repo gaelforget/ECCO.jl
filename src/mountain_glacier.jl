@@ -11,15 +11,18 @@ using Enzyme
 end
 
 """
-    forward_problem(xx::Array, dx::Float64, nx::Int, dt::Float64, nt::Int)
+    forward_problem(M0=0.004; dt=1/12.0, nt=6*5000, dx = 1.0, nx = 30)
 
 Simple, 1D mountain glacier model inspired from the book Fundamentals of Glacier Dynamics, 
 by CJ van der Veen, and which was translated to Julia by S Gaikwad.
 
 See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
+
+```
+V=ECCO.glacier_model.forward_problem(0.002)
+```
 """
-function forward_problem(M0=0.004; 
-	dt=1/12.0, nt=6*5000, dx = 1.0, nx = 30)
+function forward_problem(M0=0.004; dt=1/12.0, nt=6*5000, dx = 1.0, nx = 30)
 	rho = 920.0
 	g = 9.2
 	n = 3
@@ -60,17 +63,6 @@ function forward_problem(M0=0.004;
 
 	V = sum(Array(h_capital[1:nx+1].*dx))
 	return V
-end
-
-"""
-    integrate()
-
-```
-V=ECCO.glacier_model.integrate()
-```
-"""
-function integrate(M0=.004)
-	forward_problem(M0)
 end
 
 adjoint_problem(x)=autodiff(Reverse, forward_problem, Active(x[1]))

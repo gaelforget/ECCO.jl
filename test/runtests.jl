@@ -35,8 +35,8 @@ using Test
 
     ##
     
-    V=ECCO.glacier_model.integrate()
-    @test isapprox(V,12.364982412145055)
+    V=ECCO.glacier_model.forward_problem()
+    @test isapprox(V,12.36497768703625)
 
     store=ECCO.Lorenz_models.L96()
     @test isapprox(store[1,end],-1.334792006090324)
