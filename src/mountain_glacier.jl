@@ -16,7 +16,8 @@ by CJ van der Veen, and which was translated to Julia by S Gaikwad.
 
 See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
 """
-function forward_problem(xx::Array, dx::Float64, nx::Int, dt::Float64, nt::Int, M0=0.004)
+function forward_problem(M0=0.004; 
+	dt=1/12.0, nt=6*5000, dx = 1.0, nx = 30)
 	rho = 920.0
 	g = 9.2
 	n = 3
@@ -30,9 +31,11 @@ function forward_problem(xx::Array, dx::Float64, nx::Int, dt::Float64, nt::Int, 
 	D = zeros(nx)
 	phi = zeros(nx)
 
+	xx = zeros(nx+1)
+	xarr = [(i-1)*dx for i in 1:(nx+1)]
+
 	M = zeros(nx+1)
 	b = zeros(nx+1)
-	xarr = [(i-1)*dx for i in 1:(nx+1)]
 	M .= M0 .- xarr .* M1 .+ xx
 	b .= 1.0 .+ bx .* xarr
 
@@ -47,7 +50,8 @@ function forward_problem(xx::Array, dx::Float64, nx::Int, dt::Float64, nt::Int, 
 		phi .= -D .* (h[2:nx+1] .- h[1:nx]) ./ dx
 
 		h[2:nx] .= h[2:nx] .+ M[2:nx] .* dt .- dt/dx .* (phi[2:nx] .- phi[1:nx-1])
-		h[2:nx] .= update_h.(h[2:nx], b[2:nx])
+#		h[2:nx] .= update_h.(h[2:nx], b[2:nx])
+		h[2:nx] .= [max(h[i],b[i]) for i in 2:nx]
 
 		h_capital .= h .- b
 	end
@@ -64,13 +68,7 @@ V=ECCO.glacier_model.integrate()
 ```
 """
 function integrate(M0=.004)
-	dt = 1/12.0
-	nt = 12*5000
-	dx = 1.0
-	nx = 30
-
-	xx = zeros(nx+1)
-	forward_problem(xx, dx, nx, dt, nt, M0)
+	forward_problem(M0)
 end
 
 end
