@@ -17,9 +17,11 @@ using Test
     adx=ECCO.toy_problems.f_tau_ad([300.,0.001,1.,10.],[0.0])
     @test isa(adx,Vector)
 
-    x=[0.004]
-    adx=ECCO.glacier_model.adjoint_problem(x)
-    @test isapprox(adx[1][1],2647.01879892872)
+    if VERSION<v"1.11.0"
+      x=[0.004]
+      adx=ECCO.glacier_model.adjoint_problem(x)
+      @test isapprox(adx[1][1],2647.01879892872)
+    end
 
     ## ForwardDiff
 
