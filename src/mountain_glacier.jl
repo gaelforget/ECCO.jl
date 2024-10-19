@@ -1,6 +1,8 @@
 
 module glacier_model
 
+using Enzyme
+
 @inline function update_h(h::Float64, b::Float64)
 	if h < b
 		h = b
@@ -70,6 +72,8 @@ V=ECCO.glacier_model.integrate()
 function integrate(M0=.004)
 	forward_problem(M0)
 end
+
+adjoint_problem(x)=autodiff(Reverse, forward_problem, Active(x[1]))
 
 end
 
