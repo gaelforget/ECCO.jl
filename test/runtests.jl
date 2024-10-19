@@ -3,6 +3,8 @@ using Test
 
 @testset "ECCO.jl" begin
 
+    ## Enzyme
+
     (f,f_ad,x)=ECCO.toy_problems.enzyme_ex1()
     (f,f_ad,x)=ECCO.toy_problems.enzyme_ex2()
     (f,f_ad,x,y)=ECCO.toy_problems.enzyme_ex3()
@@ -18,6 +20,16 @@ using Test
     x=[0.004]
     adx=ECCO.glacier_model.adjoint_problem(x)
     @test isapprox(adx[1][1],2647.01879892872)
+
+    ## ForwardDiff
+
+    (x,adx)=ECCO.toy_problems.ForwardDiff_ex1()
+    @test isapprox(adx[2],458.8925283180731)
+
+    ## Zygote
+
+    (x,adx)=ECCO.Zygote_ex1()
+    @test isapprox(adx[2],458.8925283180731)
 
     ##
 
