@@ -9,25 +9,23 @@ module glacier_model
 end
 
 """
-    forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64, 
-					dt::Float64, tend::Float64)
+    forward_problem(xx::Array, dx::Float64, nx::Int, dt::Float64, nt::Int)
 
 Simple, 1D mountain glacier model inspired from the book Fundamentals of Glacier Dynamics, 
 by CJ van der Veen, and which was translated to Julia by S Gaikwad.
 
 See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
 """
-function forward_problem(xx::Array, nx::Int, dx::Float64, xend::Float64, 
-						dt::Float64, tend::Float64)
+function forward_problem(xx::Array, dx::Float64, nx::Int, dt::Float64, nt::Int, M0=0.004)
 	rho = 920.0
 	g = 9.2
 	n = 3
 	A = 1.e-16
 	C = 2*A/(n+2)*(rho*g)^n*(1.e3)^n
 	bx = -0.0001
-	M0 = .004
+	#M0 = .004
 	M1 = 0.0002
-	nt = Int(round(tend/dt))
+	tend = nt*dt
 
 	D = zeros(nx)
 	phi = zeros(nx)
@@ -65,15 +63,14 @@ end
 V=ECCO.glacier_model.integrate()
 ```
 """
-function integrate()
-	dx = 1.0
-	xend = 30.0
+function integrate(M0=.004)
 	dt = 1/12.0
-	tend = 5000.0
-	nx = Int(round(xend/dx))
+	nt = 12*5000
+	dx = 1.0
+	nx = 30
 
 	xx = zeros(nx+1)
-	forward_problem(xx, nx, dx, xend, dt, tend)
+	forward_problem(xx, dx, nx, dt, nt, M0)
 end
 
 end
