@@ -99,9 +99,6 @@ function fake_obs(x)
    result
 end
 
-Qobs=0.9*Q
-Tobs=fake_obs(Qobs)
-
 # ╔═╡ 687bcfbc-6db8-42de-86f3-f6572ed88ca8
 function the_main_loop(x)
    dt=1
@@ -113,28 +110,36 @@ function the_main_loop(x)
    return result
 end
 
-the_main_loop_cost(x)=mean((the_main_loop(x)-Tobs).^2)
-adthe_main_loop_cost(x)=ForwardDiff.gradient(the_main_loop_cost, x)
+function adjoint_demo(par=[Q])
+    Qobs=0.9*Q
+    Tobs=fake_obs(Qobs)
 
-the_main_loop_cost(Q)
-adQ=adthe_main_loop_cost([Q])
+    the_main_loop_cost(x)=mean((the_main_loop(x)-Tobs).^2)
+    adthe_main_loop_cost(x)=ForwardDiff.gradient(the_main_loop_cost, x)
 
-#gradient check
-grdchk=(adQ,the_main_loop_cost(Q+0.5)-the_main_loop_cost(Q-0.5))
+    the_main_loop_cost(Q)
+    adQ=adthe_main_loop_cost([Q])
 
-"""### Optimize Eqauilibrium solution"""
+    #gradient check
+    grdchk=(adQ,the_main_loop_cost(Q+0.5)-the_main_loop_cost(Q-0.5))
+end
 
-Tobs2=dTdt_solve(Qobs).u[end]
+"""### Optimize Equilibrium solution"""
 
-function dTdt_solve_optim()
-	f(x)=mean((dTdt_solve(x).u[end]-Tobs2).^2)
+function dTdt_solve_optim(Tobs)
+	f(x)=mean((dTdt_solve(x).u[end]-Tobs).^2)
 	x0 = [Q]
 	result=Optim.optimize(f, x0)
 	x1=Optim.minimizer(result)
 	f,x0,x1,result
 end
 
-(f_2,x0_2,x1_2,Q_2)=dTdt_solve_optim()
+function optim_demo(Q=Q)
+    Qobs=0.9*Q
+    Tobs=dTdt_solve(Qobs).u[end]
+    (f,x0,x1,Q)=dTdt_solve_optim(Tobs)
+    println("first guess=$(x0) optim=$(x1) truth=$(Qobs)")
+end
 
 #let
 #	lines(dTdt_solve(x0_2).u[end],label="first guess")
@@ -145,13 +150,14 @@ end
 #end
 
 # ╔═╡ 33594591-77ff-4ab1-b79c-085d445a68f6
-println("first guess=$(x0_2) optim=$(x1_2) truth=$(Qobs)")
 
 """### Optimize with `the_main_loop_cost`"""
 
 # ╔═╡ 8e37c864-d8cd-4e7b-8e7c-a5425bd3f4ab
 function dTdt_loop_optim()
-	f(x) = the_main_loop_cost(x)
+    Qobs=0.9*Q
+    Tobs=fake_obs(Qobs)
+    f(x)=mean((the_main_loop(x)-Tobs).^2)
 	x0 = [Q]
 	result=Optim.optimize(f, x0)
 	x1=Optim.minimizer(result)
@@ -159,23 +165,10 @@ function dTdt_loop_optim()
 end
 
 # ╔═╡ 2f430227-47ee-48a0-8c7c-d2b8ba32299d
-begin
-	f_1,x0_1,x1_1,result=dTdt_loop_optim()
-	(y0,y1)=(f_1(x0_1),f_1(x1_1))
-	[x0_1 x1_1 0.9*Q]
+function optim_demo_loop()
+	f,x0,x1,result=dTdt_loop_optim()
+	(y0,y1)=(f(x0),f(x1))
+	[x0 x1 0.9*Q]
 end
-
-"""Solve via loop (slow)"""
-function time_stepping(Tini; Q=Q, nt=10, dt=1)
-	T=deepcopy(Tini)
-	incr=zeros(Int(nt))
-	for t in 1:Int(nt)
-		incr[t]=maximum(abs.(dt*dTdt(T,Q=Q)))
-		T.+=dt*dTdt(T)
-	end
-	T,incr
-end
-
-T,I=time_stepping(Tini,nt=1e5)
 
 end
