@@ -134,11 +134,11 @@ function dTdt_solve_optim(Tobs)
 	f,x0,x1,result
 end
 
-function optim_demo(Q=Q)
+function optim_demo(Q=Q; verbose=false)
     Qobs=0.9*Q
     Tobs=dTdt_solve(Qobs).u[end]
     (f,x0,x1,Q)=dTdt_solve_optim(Tobs)
-    println("first guess=$(x0) optim=$(x1) truth=$(Qobs)")
+    verbose ? println("first guess=$(x0) optim=$(x1) truth=$(Qobs)") : nothing
 end
 
 #let
