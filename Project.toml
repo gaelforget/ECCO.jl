@@ -24,7 +24,7 @@ MITgcm = "0.5"
 MeshArrays = "0.3"
 Optim = "1"
 OrdinaryDiffEq = "6"
-Statistics = "1.11.1"
+Statistics = "1"
 Zygote = "0.7"
 julia = "1.9"
 
