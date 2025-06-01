@@ -62,9 +62,14 @@ end
     dTdt_demo(par=[Q])
 
 ```
+using ECCO, CairoMakie
+
+(; Q, y) = Budyko_Sellers_models.params
+Tsol,Tini,dTdt_ini,incr_t,incr=Budyko_Sellers_models.dTdt_demo(Q)
+
 fig=Figure()
-Axis(fig[1,1]); lines!(params.y,dTdt(Tini))
-Axis(fig[2,1]); lines!(params.y,Tini); lines!(params.y,Tsol,color=:red)
+Axis(fig[1,1]); lines!(y,dTdt_ini)
+Axis(fig[2,1]); lines!(y,Tini); lines!(y,Tsol,color=:red)
 Axis(fig[3,1]); lines!(incr_t,incr)	
 fig
 ```
@@ -75,8 +80,8 @@ function dTdt_demo(par=[Q])
     
 	incr=[maximum(abs.(sol.u[t+1]-sol.u[t]))/(sol.t[t+1]-sol.t[t]) for t in 1:length(sol.t)-1]
 	incr_t=0.5*(sol.t[2:end]+sol.t[1:end-1])
-
-    Tsol,incr
+    dTdt_ini=Budyko_Sellers_models.dTdt(Tini)
+    Tsol,Tini,dTdt_ini,incr_t,incr
 end
 
 function fake_obs(x)

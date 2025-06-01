@@ -29,6 +29,7 @@ store=ECCO.Lorenz_models.L96()
 lines(store[1,:]); lines!(store[2,:]); lines!(store[end,:])
 current_figure()
 ```
+
 """
 function L96(; N=5, F=8)
     L=Lorenz96{N}()
