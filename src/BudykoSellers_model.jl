@@ -3,13 +3,9 @@ module Budyko_Sellers_models
 
 using OrdinaryDiffEq, ForwardDiff, Statistics, Optim
 
+##1. setup
+
 """# Budyko-Sellers Energy Balance Model
-
-### References
-
-- DISCRETE AND CONTINUOUS , doi:10.3934/dcdsb.2015.20.2187 -- ON THE BUDYKO-SELLERS ENERGY BALANCE CLIMATE MODEL WITH ICE LINE COUPLING -- James Walsh, Christopher Rackauckas
-- Theory of Energy-Balance Climate Models -- Gerald R. North -- Print Publication: 01 Nov 1975 -- DOI: https://doi.org/10.1175/1520-0469(1975)032<2033:TOEBCM>2.0.CO;2
-- Predictability in a Solvable Stochastic Climate Model -- Gerald R. North and Robert F. Cahalan -- https://doi.org/10.1175/1520-0469(1981)038%3C0504:PIASSC%3E2.0.CO;2
 
 ### Parameter Choices
 
@@ -23,15 +19,7 @@ From Walsh and Rackauckas :
   - Parameters: Q = 343, A = 202, B = 1.9, C = 3.04, αw = 0.32, αs = 0.62, Tc =−10.
 - Figure 9. Equilibrium solutions of (2) with albedo function (34). Solid: η= 0.1. Dashed: η= 0.25. Dash-Dot: η= 0.4. 
   - Parameters: Q = 321,A = 167,B = 1.5,C = 2.25,M = 50,αw = 0.32,αi = 0.46,αs = 0.72,ρ= 0.35.
-
-### Earlier Implementations
-
-- <https://www.cise.ufl.edu/~luke.morris/2_4_2025/build/bsh/budyko_sellers_halfar/>
-- <https://brian-rose.github.io/ClimateLaboratoryBook/courseware/one-dim-ebm.html>
 """
-
-##1. setup
-
 params=(y=-89:1:89, η=70, R=10^7,
 		Q = 343.0, A = 202, B = 1.9, C = 3.04, 
 		αw = 0.32, αs = 0.62, Tbar = -10.0, 
@@ -71,6 +59,8 @@ function dTdt_solve(par=[Q])
 end
 
 """
+    dTdt_demo(par=[Q])
+
 ```
 fig=Figure()
 Axis(fig[1,1]); lines!(params.y,dTdt(Tini))
@@ -99,17 +89,31 @@ function fake_obs(x)
    result
 end
 
-# ╔═╡ 687bcfbc-6db8-42de-86f3-f6572ed88ca8
-function the_main_loop(x)
+"""
+    the_main_loop(x; nt=10000)
+
+Do `nt` time steps of `dt*dTdt(result,Q=x)`.
+"""
+function the_main_loop(x; nt=10000)
    dt=1
    result = zeros(eltype(x),179)
    result.=Tini
-   for i in 1:10000
+   for i in 1:nt
 	   result .+= dt*dTdt(result,Q=x)
    end
    return result
 end
 
+
+"""
+    adjoint_demo(par=[Q])
+
+- generate obs for cost function with `fake_obs`.
+- call `the_main_loop_cost` and `adthe_main_loop_cost`
+- return gradient check result
+
+`grdchk=adjoint_demo([Q])`
+"""
 function adjoint_demo(par=[Q])
     Qobs=0.9*Q
     Tobs=fake_obs(Qobs)
@@ -126,6 +130,14 @@ end
 
 """### Optimize Equilibrium solution"""
 
+
+"""
+    dTdt_solve_optim(Tobs)
+
+Call `dTdt_solve` and then `Optim.optimize` (adjoint free).
+
+`f,x0,x1,result=dTdt_solve_optim(Tobs)`
+"""
 function dTdt_solve_optim(Tobs)
 	f(x)=mean((dTdt_solve(x).u[end]-Tobs).^2)
 	x0 = [Q]
@@ -134,6 +146,13 @@ function dTdt_solve_optim(Tobs)
 	f,x0,x1,result
 end
 
+"""
+    optim_demo(Q=Q; verbose=false)
+
+Call `dTdt_solve` and then `dTdt_solve_optim`.
+
+`optim_demo()`
+"""
 function optim_demo(Q=Q; verbose=false)
     Qobs=0.9*Q
     Tobs=dTdt_solve(Qobs).u[end]
@@ -149,11 +168,13 @@ end
 #	current_figure()
 #end
 
-# ╔═╡ 33594591-77ff-4ab1-b79c-085d445a68f6
+"""
+    dTdt_loop_optim()
 
-"""### Optimize with `the_main_loop_cost`"""
+Call `the_main_loop` and then `Optim.optimize`.
 
-# ╔═╡ 8e37c864-d8cd-4e7b-8e7c-a5425bd3f4ab
+`f,x0,x1,result=dTdt_loop_optim()`
+"""
 function dTdt_loop_optim()
     Qobs=0.9*Q
     Tobs=fake_obs(Qobs)
@@ -164,7 +185,11 @@ function dTdt_loop_optim()
 	f,x0,x1,result
 end
 
-# ╔═╡ 2f430227-47ee-48a0-8c7c-d2b8ba32299d
+"""
+    optim_demo_loop()
+
+Call `dTdt_loop_optim`.
+"""
 function optim_demo_loop()
 	f,x0,x1,result=dTdt_loop_optim()
 	(y0,y1)=(f(x0),f(x1))

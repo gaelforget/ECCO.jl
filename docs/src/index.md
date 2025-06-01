@@ -15,8 +15,8 @@ _this package is in early development stage_
 ```
 
 ```@autodocs
-Modules = [ECCO, ECCO.toy_problems, ECCO.Zygote_examples,
-		ECCO.glacier_model, ECCO.Lorenz_models]
+Modules = [ECCO, toy_problems, Zygote_examples,
+		glacier_model, Lorenz_models, Budyko_Sellers_models]
 ```
 
 
