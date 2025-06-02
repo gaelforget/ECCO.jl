@@ -121,5 +121,6 @@ by CJ van der Veen, and which was translated to Julia by S Gaikwad.
 See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
 
 ```@example glacier_model
+using ECCO
 V=glacier_model.forward_problem(0.002)
 ```
