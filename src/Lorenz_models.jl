@@ -67,7 +67,7 @@ See https://en.wikipedia.org/wiki/Lorenz_system
 
 ```
 using ECCO, CairoMakie
-x,y,z=ECCO.Lorenz_models.L63()
+x,y,z=Lorenz_models.L63()
 lines(x,y,z)
 ```
 """

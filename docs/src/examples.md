@@ -115,4 +115,11 @@ From Walsh and Rackauckas :
 
 ## Glacier
 
+Simple, 1D mountain glacier model inspired from the book Fundamentals of Glacier Dynamics, 
+by CJ van der Veen, and which was translated to Julia by S Gaikwad.
 
+See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
+
+```@example glacier_model
+V=glacier_model.forward_problem(0.002)
+```

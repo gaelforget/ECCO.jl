@@ -19,7 +19,7 @@ by CJ van der Veen, and which was translated to Julia by S Gaikwad.
 See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
 
 ```
-V=ECCO.glacier_model.forward_problem(0.002)
+V=glacier_model.forward_problem(0.002)
 ```
 """
 function forward_problem(M0=0.004; dt=1/12.0, nt=6*5000, dx = 1.0, nx = 30)
