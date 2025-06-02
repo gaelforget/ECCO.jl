@@ -10,14 +10,9 @@ import Enzyme: autodiff, Reverse, Active, Duplicated
 import AirSeaFluxes: simpleflux, bulkformulae
 
 """
-    ECCO.toy_problems.Enzyme_ex1()
+    toy_problems.Enzyme_ex1()
 
-```
-using ECCO
-(f,f_ad,x)=ECCO.toy_problems.Enzyme_ex1()
-f(x)
-f_ad(x)
-```
+Simple air sea flux calculation and it's adjoint, obtained via Enzyme.
 """
 function Enzyme_ex1()
     mld=10 #mixed layer depth (m)
@@ -37,11 +32,14 @@ end
 ## univariate example 2
 
 """
-    ECCO.toy_problems.Enzyme_ex2()
+    toy_problems.Enzyme_ex2()
+
+- air sea flux calculation derived using standard bulk formulae algorithm.
+- it's adjoint, obtained via Enzyme.
 
 ```
 using ECCO
-(f,f_ad,x)=ECCO.toy_problems.Enzyme_ex2()
+(f,f_ad,x)=toy_problems.Enzyme_ex2()
 f(x...)
 f_ad(x...)
 ```
@@ -82,11 +80,11 @@ function f_hl_ad(x=[300.,0.001,1.,10.], y=[0.0])
 end
 
 """
-    ECCO.toy_problems.Enzyme_ex3()
+    toy_problems.Enzyme_ex3()
 
 ```
 using ECCO
-(f,f_ad,x,y)=ECCO.toy_problems.Enzyme_ex3()
+(f,f_ad,x,y)=toy_problems.Enzyme_ex3()
 f(x,y)
 f_ad(x,y)
 ```    
@@ -94,11 +92,11 @@ f_ad(x,y)
 Enzyme_ex3() = (f_tau,f_tau_ad,[300.,0.001,1.,10.],[0.0])
 
 """
-    ECCO.toy_problems.Enzyme_ex4()
+    toy_problems.Enzyme_ex4()
 
 ```
 using ECCO
-(f,f_ad,x,y)=ECCO.toy_problems.Enzyme_ex4()
+(f,f_ad,x,y)=toy_problems.Enzyme_ex4()
 f(x,y)
 f_ad(x,y)
 ```    
@@ -108,11 +106,11 @@ Enzyme_ex4() = (f_hl,f_hl_ad,[300.,0.001,1.,10.],[0.0])
 ## ForwardDiff
 
 """
-    ECCO.toy_problems.ForwardDiff_ex1()
+    toy_problems.ForwardDiff_ex1()
 
 ```
 using ECCO
-(x,adx)=ECCO.toy_problems.ForwardDiff_ex1()
+(x,adx)=toy_problems.ForwardDiff_ex1()
 ```
 """
 ForwardDiff_ex1() = begin
@@ -125,11 +123,11 @@ end
 ## Optim
 
 """
-    ECCO.toy_problems.optim_ex1()
+    toy_problems.optim_ex1()
 
 ```
 using ECCO
-(f,x0,x1,result)=ECCO.toy_problems.optim_ex1()
+(f,x0,x1,result)=toy_problems.optim_ex1()
 ```
 """
 function optim_ex1()
@@ -141,7 +139,7 @@ function optim_ex1()
 end
 
 """
-    ECCO.toy_problems.optim_ex2()
+    toy_problems.optim_ex2()
 """
 function optim_ex2()
     f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
@@ -156,7 +154,7 @@ function optim_ex2()
 end
 
 """
-    ECCO.toy_problems.optim_ex3()
+    toy_problems.optim_ex3()
 """
 function optim_ex3()
         h(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
@@ -183,11 +181,11 @@ module Zygote_examples
 using Zygote, AirSeaFluxes
 
 """
-    ECCO.toy_problems.Zygote_ex1()
+    toy_problems.Zygote_ex1()
 
 ```
 using ECCO
-(x,adx)=ECCO.Zygote_examples.Zygote_ex1()
+(x,adx)=Zygote_examples.Zygote_ex1()
 ```
 """
 Zygote_ex1() = begin

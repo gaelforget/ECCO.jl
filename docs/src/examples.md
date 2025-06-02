@@ -1,6 +1,60 @@
 
+## Simple air-sea flux calculation
+
+Simple air sea flux calculation and it's adjoint, obtained via Enzyme.
+
+```@example Fluxes
+using ECCO
+(f,f_ad,x)=toy_problems.Enzyme_ex1()
+f_x=f(x); f_ad_x=f_ad(x)[1][1]
+println("f(x)=$f_x adfx=$f_ad_x")
+```
 
 ## Bulk formulae
+
+Air sea flux calculation derived using standard bulk formulae algorithm, and it's adjoint, obtained via Enzyme.
+
+```@example Fluxes
+(f,f_ad,x)=toy_problems.Enzyme_ex2()
+f_x=f(x...); f_ad_x=f_ad(x...)
+println("f(x)=$(f_x) adfx=$(f_ad_x)")
+```
+
+```@example Fluxes
+(f,f_ad,x,y)=toy_problems.Enzyme_ex3()
+f_x=f(x,y); f_ad_x=f_ad(x,y)
+println("f(x)=$(f_x) adfx=$(f_ad_x)")
+```
+
+```@example Fluxes
+(f,f_ad,x,y)=toy_problems.Enzyme_ex4()
+f_x=f(x,y); f_ad_x=f_ad(x,y)
+println("f(x)=$(f_x) adfx=$(f_ad_x)")
+```
+
+```@example Fluxes
+(x,adx)=toy_problems.ForwardDiff_ex1()
+println("x=$(x) adfx=$(adx)")
+```
+
+```@example Fluxes
+(x,adx)=Zygote_examples.Zygote_ex1()
+```
+
+## Optimization
+
+```@example Optim
+using ECCO
+(f,x0,x1,result)=toy_problems.optim_ex1()
+```
+
+```@example Optim
+h,h!,x0,x1,result=toy_problems.optim_ex2()
+```
+
+```@example Optim
+h,h!,x0,x1,result=toy_problems.optim_ex3()
+```
 
 ## Lorenz
 
@@ -8,9 +62,13 @@ See https://en.wikipedia.org/wiki/Lorenz_96_model
 
 ```@example L1
 using ECCO, CairoMakie
-store=Lorenz_models.L96()
-lines(store[1,:]); lines!(store[2,:]); lines!(store[end,:])
-current_figure()
+xyz=Lorenz_models.L96()
+lines(xyz[1,:],xyz[2,:],xyz[end,:])
+```
+
+```@example L1
+x,y,z=Lorenz_models.L63()
+lines(x,y,z)
 ```
 
 ## Budyko-Sellers Energy Balance Model
