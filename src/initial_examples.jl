@@ -196,3 +196,29 @@ Zygote_ex1() = begin
 end
 
 end
+
+
+module DifferentiationInterface_example
+
+using DifferentiationInterface
+using ForwardDiff: ForwardDiff
+#using Enzyme: Enzyme
+#using Zygote: Zygote  # AD backends you want to use
+
+import AirSeaFluxes: simpleflux, bulkformulae
+
+f(x) = sum(abs2, x)
+
+x = [1.0, 2.0]
+
+value_and_gradient(f, AutoForwardDiff(), x) # returns (5.0, [2.0, 4.0]) with ForwardDiff.jl
+#value_and_gradient(f, AutoEnzyme(), x) # returns (5.0, [2.0, 4.0]) with Enzyme.jl
+#value_and_gradient(f, AutoZygote(), x) # returns (5.0, [2.0, 4.0]) with Zygote.jl
+
+DifferentiationInterface_ex1() = begin
+    f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
+    x=[300.,0.001,1.,10.]
+    value_and_gradient(f, AutoForwardDiff(), x)
+end
+
+end

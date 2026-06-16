@@ -9,6 +9,7 @@ include("Lorenz_models.jl")
 include("BudykoSellers_model.jl")
 
 Zygote_ex1=Zygote_examples.Zygote_ex1
+DifferentiationInterface_ex1=DifferentiationInterface_example.DifferentiationInterface_ex1
 
 export Budyko_Sellers_models, Lorenz_models, glacier_model
 export toy_problems, Zygote_examples
