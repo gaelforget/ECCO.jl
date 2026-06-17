@@ -1,4 +1,4 @@
-using ECCO
+using ECCO, Zygote
 using Test
 
 @testset "ECCO.jl" begin

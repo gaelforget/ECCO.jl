@@ -178,7 +178,9 @@ end
 
 module Zygote_examples
 
-using Zygote, AirSeaFluxes
+#note : this requires externally calling `using Zygote` to extend methods for `adjoint` 
+
+using AirSeaFluxes
 
 """
     toy_problems.Zygote_ex1()
