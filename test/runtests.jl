@@ -1,4 +1,4 @@
-using ECCO, Zygote
+using ECCO, Zygote, OrdinaryDiffEq
 using Test
 
 @testset "ECCO.jl" begin

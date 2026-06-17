@@ -1,7 +1,8 @@
 
 module Budyko_Sellers_models
 
-using OrdinaryDiffEq, ForwardDiff, Statistics, Optim
+using ForwardDiff, Statistics, Optim
+import ECCO: dTdt_solve
 
 ##1. setup
 
@@ -52,12 +53,6 @@ Etran(T)=C*(T.−Tbar)
 
 dTdt(T;Q=Q)= (Ein(params.y,Q=Q).−Eout(T).−Etran.(T))./params.R
 
-function dTdt_solve(par=[Q])
-    f(u, p, t) = dTdt(u,Q=par[1])	
-    prob = ODEProblem(f, Tini, (0.0, params.ntime))
-    sol = solve(prob, Tsit5(), reltol = 1e-8, abstol = 1e-8)
-end
-
 """
     dTdt_demo(par=[Q])
 
@@ -75,7 +70,7 @@ fig
 ```
 """
 function dTdt_demo(par=[Q])
-    sol=dTdt_solve([Q])
+    sol=dTdt_solve(Tini,params,[Q])
 	Tsol = sol.u[end]
     
 	incr=[maximum(abs.(sol.u[t+1]-sol.u[t]))/(sol.t[t+1]-sol.t[t]) for t in 1:length(sol.t)-1]
@@ -143,8 +138,8 @@ Call `dTdt_solve` and then `Optim.optimize` (adjoint free).
 
 `f,x0,x1,result=dTdt_solve_optim(Tobs)`
 """
-function dTdt_solve_optim(Tobs)
-	f(x)=mean((dTdt_solve(x).u[end]-Tobs).^2)
+function dTdt_solve_optim(Tini,params,Tobs)
+	f(x)=mean((dTdt_solve(Tini,params,x).u[end]-Tobs).^2)
 	x0 = [Q]
 	result=Optim.optimize(f, x0)
 	x1=Optim.minimizer(result)
@@ -160,8 +155,8 @@ Call `dTdt_solve` and then `dTdt_solve_optim`.
 """
 function optim_demo(Q=Q; verbose=false)
     Qobs=0.9*Q
-    Tobs=dTdt_solve(Qobs).u[end]
-    (f,x0,x1,Q)=dTdt_solve_optim(Tobs)
+    Tobs=dTdt_solve(Tini,params,Qobs).u[end]
+    (f,x0,x1,Q)=dTdt_solve_optim(Tini,params,Tobs)
     verbose ? println("first guess=$(x0) optim=$(x1) truth=$(Qobs)") : nothing
 end
 
