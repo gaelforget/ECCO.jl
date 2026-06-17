@@ -33,6 +33,11 @@ using Test
     (x,adx)=ECCO.Zygote_ex1()
     @test isapprox(adx[2],458.8925283180731)
 
+    ## DifferentiationInterface
+
+    (x,adx)=ECCO.DifferentiationInterface_ex1()
+    @test isapprox(adx[2],458.8925283180731)
+
     ##
 
     (f,x0,x1,result)=toy_problems.optim_ex1()
