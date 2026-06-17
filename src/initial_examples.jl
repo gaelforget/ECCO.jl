@@ -1,12 +1,11 @@
 
 module toy_problems
 
-import Enzyme, Optim, ForwardDiff
-import AirSeaFluxes
+import Optim, ForwardDiff, AirSeaFluxes
+import ECCO: _autodiff_Reverse, _Active, _Duplicated
 
 #export Enzyme_ex1, Enzyme_ex2, Enzyme_ex3, Enzyme_ex4
 
-import Enzyme: autodiff, Reverse, Active, Duplicated
 import AirSeaFluxes: simpleflux, bulkformulae
 
 """
@@ -24,7 +23,7 @@ function Enzyme_ex1()
     #flx=simpleflux(Ca,Co,pisvel)
 
     flux(x)=simpleflux(x[1],Ca,pisvel)
-    flux_ad(x)=autodiff(Reverse, flux, Active(x[1]))
+    flux_ad(x)=_autodiff_Reverse(flux, _Active(x[1]))
 
     (flux,flux_ad,[Co])
 end
@@ -52,7 +51,7 @@ function Enzyme_ex2()
     #all=bulkformulae(atemp,aqh,speed,sst)
 
     f_evap(x,y)=bulkformulae(atemp,aqh,x,y).evap
-    f_evap_ad(x,y)=autodiff(Reverse, f_evap, Active(x), Active(y))
+    f_evap_ad(x,y)=_autodiff_Reverse(f_evap, _Active(x), _Active(y))
 
     (f_evap,f_evap_ad,(speed, sst))
 end
@@ -65,7 +64,7 @@ function f_tau(x::Array{Float64}, y::Array{Float64})
 end        
 function f_tau_ad(x=[300.,0.001,1.,10.], y=[0.0])
     bx = zeros(size(x)); by = ones(size(x))
-    autodiff(Reverse, f_tau, Duplicated(x, bx), Duplicated(y, by));
+    _autodiff_Reverse(f_tau, _Duplicated(x, bx), _Duplicated(y, by));
     copy(bx)
 end
 
@@ -75,7 +74,7 @@ function f_hl(x::Array{Float64}, y::Array{Float64})
 end
 function f_hl_ad(x=[300.,0.001,1.,10.], y=[0.0])
     bx = zeros(size(x)); by = ones(size(x))
-    autodiff(Reverse, f_hl, Duplicated(x, bx), Duplicated(y, by));
+    _autodiff_Reverse(f_hl, _Duplicated(x, bx), _Duplicated(y, by));
     copy(bx)
 end
 
@@ -160,7 +159,7 @@ function optim_ex3()
         h(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
         function h!(bx2, x) 
             bx = zeros(size(x))
-            Enzyme.autodiff(Reverse, h, Duplicated(x, bx))
+            _autodiff_Reverse(h, _Duplicated(x, bx))
             bx2 .= bx
         end
         x0 = [0.0, 0.0]

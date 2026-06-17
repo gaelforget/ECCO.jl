@@ -1,7 +1,7 @@
 module ECCO
 
 # Write your package code here.
-import Climatology, MITgcm, Optim, Enzyme, AirSeaFluxes
+import Climatology, MITgcm, Optim, AirSeaFluxes
 
 include("initial_examples.jl")
 include("mountain_glacier.jl")
@@ -11,6 +11,10 @@ include("BudykoSellers_model.jl")
 Zygote_ex1=Zygote_examples.Zygote_ex1
 DifferentiationInterface_ex1=DifferentiationInterface_example.DifferentiationInterface_ex1
 
+_autodiff_Reverse() = (@warn "undefined")
+_Reverse() = (@warn "undefined")
+_Active() = (@warn "undefined")
+_Duplicated() = (@warn "undefined")
 
 """
     dTdt_solve()
