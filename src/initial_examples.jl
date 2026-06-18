@@ -216,10 +216,21 @@ value_and_gradient(f, AutoForwardDiff(), x) # returns (5.0, [2.0, 4.0]) with For
 #value_and_gradient(f, AutoEnzyme(), x) # returns (5.0, [2.0, 4.0]) with Enzyme.jl
 #value_and_gradient(f, AutoZygote(), x) # returns (5.0, [2.0, 4.0]) with Zygote.jl
 
-DifferentiationInterface_ex1() = begin
+"""
+    DifferentiationInterface_ex1(backend=AutoForwardDiff())
+
+```
+using ECCO, Mooncake
+using ECCO.DifferentiationInterface_example.DifferentiationInterface
+
+backend = AutoMooncake(; config=nothing)
+(x,adx)=ECCO.DifferentiationInterface_ex1(backend)
+```
+"""
+function DifferentiationInterface_ex1(backend=AutoForwardDiff())
     f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
     x=[300.,0.001,1.,10.]
-    value_and_gradient(f, AutoForwardDiff(), x)
+    value_and_gradient(f, backend, x)
 end
 
 end
