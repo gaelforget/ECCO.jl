@@ -1,7 +1,6 @@
 
 module glacier_model
-
-using Enzyme
+import ECCO: _autodiff_Reverse, _Active, _Duplicated
 
 @inline function update_h(h::Float64, b::Float64)
 	if h < b
@@ -65,7 +64,7 @@ function forward_problem(M0=0.004; dt=1/12.0, nt=6*5000, dx = 1.0, nx = 30)
 	return V
 end
 
-adjoint_problem(x)=autodiff(Reverse, forward_problem, Active(x[1]))
+adjoint_problem(x)=_autodiff_Reverse(forward_problem, _Active(x[1]))
 
 end
 

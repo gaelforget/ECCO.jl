@@ -4,7 +4,8 @@
 Simple air sea flux calculation and it's adjoint, obtained via Enzyme.
 
 ```@example Fluxes
-using ECCO
+using ECCO, Enzyme, Zygote, OrdinaryDiffEq
+
 (f,f_ad,x)=toy_problems.Enzyme_ex1()
 f_x=f(x); f_ad_x=f_ad(x)[1][1]
 println("f(x)=$f_x adfx=$f_ad_x")
@@ -76,7 +77,7 @@ lines(x,y,z)
 See [this tutorial](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/one-dim-ebm.html) for detailed explanations.
 
 ```@example B-S1
-using ECCO, CairoMakie
+using ECCO, Enzyme, Zygote, OrdinaryDiffEq, CairoMakie
 
 (; Q, y) = Budyko_Sellers_models.params
 Tsol,Tini,dTdt_ini,incr_t,incr=Budyko_Sellers_models.dTdt_demo(Q)
@@ -121,6 +122,6 @@ by CJ van der Veen, and which was translated to Julia by S Gaikwad.
 See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountain-glacier-model
 
 ```@example glacier_model
-using ECCO
+using ECCO, OrdinaryDiffEq
 V=glacier_model.forward_problem(0.002)
 ```

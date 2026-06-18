@@ -1,7 +1,27 @@
 module ECCO
 
 # Write your package code here.
-import Climatology, MITgcm, Optim, Enzyme, AirSeaFluxes
+import Climatology, MITgcm, Optim, AirSeaFluxes
+
+_autodiff_Reverse() = (@warn "undefined")
+_Reverse() = (@warn "undefined")
+_Active() = (@warn "undefined")
+_Duplicated() = (@warn "undefined")
+
+"""
+    dTdt_solve()
+    
+Placeholder for the `OrdinaryDiffEq` extension.
+
+```
+using ECCO, OrdinaryDiffEq
+?ECCO.dTdt_solve
+```
+"""
+function dTdt_solve()
+    @warn "requires using dTdt_solve"
+    error("Placeholder for dTdt_solve should never be used")
+end
 
 include("initial_examples.jl")
 include("mountain_glacier.jl")
