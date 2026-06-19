@@ -37,16 +37,17 @@ using Test
 
     ## DifferentiationInterface
 
-    (x,adx)=ECCO.DifferentiationInterface_example.ex1()
-    @test isapprox(adx[2],458.8925283180731)
+    ad=ECCO.DifferentiationInterface_example.ex1()
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     backend = AutoMooncake(; config=nothing)
-    (x,adx)=ECCO.DifferentiationInterface_example.ex1(backend)
-    @test isapprox(adx[2],458.8925283180731)
+    ad=ECCO.DifferentiationInterface_example.ex1(backend)
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     ## Optimization
 
-    (f,x0,x1,result)=ECCO.calc_optim()
+    op1=ECCO.calc_optim()
+    op2=ECCO.calc_optim_ad()
 
     (f,x0,x1,result)=toy_problems.optim_ex1()
     dx=1e-4*(x0-x1)

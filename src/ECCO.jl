@@ -25,6 +25,19 @@ function dTdt_solve()
     error("Placeholder for dTdt_solve should never be used")
 end
 
+struct adjoint_result
+    x
+    adx
+end
+
+struct optim_result
+    h::Function
+    adh::Function
+    y0
+    y1
+    result
+end
+
 """
     calc_adjoint(f = y->y[1], backend=AutoForwardDiff(), x=[0.0])
 
@@ -36,11 +49,12 @@ backend = AutoMooncake(; config=nothing)
 f(x)=ECCO.AirSeaFluxes.bulkformulae(x[1],x[2],x[3],x[4]).hl
 x=[300.,0.001,1.,10.]
 
-(x,adx)=ECCO.calc_adjoint(f,backend,x)
+ad=ECCO.calc_adjoint(f,backend,x)
 ```
 """
 function calc_adjoint(f = y->y[1], backend=AutoForwardDiff(), x=[0.0])
-    value_and_gradient(f, backend, x)
+    (x,adx)=value_and_gradient(f, backend, x)
+    adjoint_result(x,adx)
 end
 
 """
@@ -51,15 +65,35 @@ using ECCO
 
 f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
 x0 = [0.0, 0.0]
-(_,_,x1,result)=ECCO.calc_optim(f,x0)
+op=ECCO.calc_optim(f,x0)
 ```
 """
 function calc_optim(f = y->(y[1]-1).^2, y0=[0.0])
     result=Optim.optimize(f, y0)
     y1=Optim.minimizer(result)
-    f,y0,y1,result
+    optim_result(f,identity,y0,y1,result)
 end
 
+"""
+    ECCO.calc_optim_ad()
+
+```
+op=ECCO.calc_optim_ad(f,x0)
+```
+"""
+function calc_optim_ad(h = y->(y[1]-1).^2, y0=[0.0]; backend=AutoForwardDiff())
+    function h!(bx2, x) 
+        bx = zeros(size(x))
+        ad=ECCO.calc_adjoint(h,backend,x)
+        bx2 .= ad.adx
+    end
+    H = zeros(2)
+    h!(H,y0)
+
+    result=Optim.optimize(h,h!,y0)
+    y1=Optim.minimizer(result)
+    optim_result(h,h!,y0,y1,result)
+end
 
 include("initial_examples.jl")
 include("mountain_glacier.jl")
