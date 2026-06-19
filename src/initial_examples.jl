@@ -188,6 +188,7 @@ module Zygote_examples
 #note : this requires externally calling `using Zygote` to extend methods for `adjoint` 
 
 using AirSeaFluxes
+import ECCO: adjoint_result, optim_result
 
 """
     toy_problems.Zygote_ex1()
