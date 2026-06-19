@@ -1,4 +1,16 @@
 
+## Generic Example
+
+Using `DifferentiationInterface.jl`
+
+```@example Generic
+using ECCO, Mooncake
+using ECCO.DifferentiationInterface
+
+backend = AutoMooncake(; config=nothing)
+(x,adx)=ECCO.DifferentiationInterface_example.ex1(backend)
+```
+
 ## Simple air-sea flux calculation
 
 Simple air sea flux calculation and it's adjoint, obtained via Enzyme.

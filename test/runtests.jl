@@ -1,6 +1,6 @@
 using ECCO
-using Zygote, OrdinaryDiffEq, Enzyme
-import Mooncake
+using Zygote, OrdinaryDiffEq, Enzyme, Mooncake
+using ECCO.DifferentiationInterface
 using Test
 
 @testset "ECCO.jl" begin
@@ -37,11 +37,11 @@ using Test
 
     ## DifferentiationInterface
 
-    (x,adx)=ECCO.DifferentiationInterface_ex1()
+    (x,adx)=ECCO.DifferentiationInterface_example.ex1()
     @test isapprox(adx[2],458.8925283180731)
 
     backend = AutoMooncake(; config=nothing)
-    (x,adx)=ECCO.DifferentiationInterface_ex1(backend)
+    (x,adx)=ECCO.DifferentiationInterface_example.ex1(backend)
     @test isapprox(adx[2],458.8925283180731)
 
     ##
