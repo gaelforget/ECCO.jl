@@ -31,10 +31,10 @@ struct adjoint_result
 end
 
 struct optim_result
-    h::Function
-    adh::Function
-    y0
-    y1
+    f::Function
+    adf::Function
+    x0
+    x1
     result
 end
 

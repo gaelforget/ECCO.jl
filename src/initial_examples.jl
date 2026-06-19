@@ -3,7 +3,7 @@ module toy_problems
 
 import Optim, ForwardDiff, AirSeaFluxes
 import ECCO: _autodiff_Reverse, _Active, _Duplicated
-import ECCO: adjoint_result, optim_result
+import ECCO: adjoint_result, optim_result, calc_optim
 
 import AirSeaFluxes: simpleflux, bulkformulae
 
@@ -134,15 +134,13 @@ end
 
 ```
 using ECCO
-(f,x0,x1,result)=toy_problems.optim_ex1()
+op=toy_problems.optim_ex1()
 ```
 """
 function optim_ex1()
     f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
     x0 = [0.0, 0.0]
-    result=Optim.optimize(f, x0)
-    x1=Optim.minimizer(result)
-    f,x0,x1,result
+    calc_optim(f,x0)
 end
 
 """
@@ -157,7 +155,7 @@ function optim_ex2()
     x0 = [0.0, 0.0]
     result=Optim.optimize(f,g!,x0)
     x1=Optim.minimizer(result)
-    f,g!,x0,x1,result
+    optim_result(f,g!,x0,x1,result)
 end
 
 """
@@ -176,7 +174,7 @@ function optim_ex3()
     
         result=Optim.optimize(h,h!,x0)
         x1=Optim.minimizer(result)
-        h,h!,x0,x1,result
+        optim_result(h,h!,x0,x1,result)
 end
 
 end

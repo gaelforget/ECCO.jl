@@ -47,17 +47,17 @@ using Test
     op1=ECCO.calc_optim()
     op2=ECCO.calc_optim_ad()
 
-    (f,x0,x1,result)=toy_problems.optim_ex1()
-    dx=1e-4*(x0-x1)
-    @test f(x1)<f(x1+dx)
+    op=toy_problems.optim_ex1()
+    dx=1e-4*(op.x0-op.x1)
+    @test op.f(op.x1)<op.f(op.x1+dx)
 
-    (f,g!,x0,x1,result)=toy_problems.optim_ex2()
-    dx=1e-4*(x0-x1)
-    @test f(x1)<f(x1+dx)
+    op=toy_problems.optim_ex2()
+    dx=1e-4*(op.x0-op.x1)
+    @test op.f(op.x1)<op.f(op.x1+dx)
 
-    (f,g!,x0,x1,result)=toy_problems.optim_ex3()
-    dx=1e-4*(x0-x1)
-    @test f(x1)<f(x1+dx)
+    op=toy_problems.optim_ex3()
+    dx=1e-4*(op.x0-op.x1)
+    @test op.f(op.x1)<op.f(op.x1+dx)
 
     ##
     
