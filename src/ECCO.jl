@@ -48,15 +48,16 @@ end
 
 ```
 using ECCO
-(f,x0,x1,result)=ECCO.calc_optim()
+
+f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
+x0 = [0.0, 0.0]
+(_,_,x1,result)=ECCO.calc_optim(f,x0)
 ```
 """
-function calc_optim(f = y->(y[1]-1).^2, x0=[0.0])
-#    f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
-#    x0 = [0.0, 0.0]
-    result=Optim.optimize(f, x0)
-    x1=Optim.minimizer(result)
-    f,x0,x1,result
+function calc_optim(f = y->(y[1]-1).^2, y0=[0.0])
+    result=Optim.optimize(f, y0)
+    y1=Optim.minimizer(result)
+    f,y0,y1,result
 end
 
 

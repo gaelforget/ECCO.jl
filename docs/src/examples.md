@@ -19,7 +19,10 @@ backend = AutoMooncake(; config=nothing)
 
 ```@example Optim
 using ECCO
-(f,x0,x1,result)=toy_problems.optim_ex1()
+
+f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
+x0 = [0.0, 0.0]
+(_,_,x1,result)=ECCO.calc_optim(f,x0)
 ```
 
 ## More Optimization
