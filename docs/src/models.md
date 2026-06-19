@@ -1,45 +1,6 @@
 # Toy Models
 
-## Adjoint Calculations
-
-### Simple air-sea flux calculation
-
-Simple air sea flux calculation and it's adjoint, obtained via Enzyme.
-
-```@example Fluxes
-using ECCO, Enzyme, Zygote, OrdinaryDiffEq
-
-ad=toy_problems.Enzyme_ex1()
-println("x=$(ad.x) adfx=$(ad.adx)")
-```
-
-### Bulk formulae
-
-Air sea flux calculation derived using standard bulk formulae algorithm, and it's adjoint, obtained via Enzyme.
-
-```@example Fluxes
-ad=toy_problems.Enzyme_ex2()
-println("x=$(ad.x) adfx=$(ad.adx)")
-```
-
-```@example Fluxes
-ad=toy_problems.Enzyme_ex3()
-println("x=$(ad.x) adfx=$(ad.adx)")
-```
-
-```@example Fluxes
-ad=toy_problems.Enzyme_ex4()
-println("x=$(ad.x) adfx=$(ad.adx)")
-```
-
-```@example Fluxes
-ad=toy_problems.ForwardDiff_ex1()
-println("x=$(ad.x) adfx=$(ad.adx)")
-```
-
-```@example Fluxes
-ad=Zygote_examples.Zygote_ex1()
-```
+Here are a few models used to demonstate the package functionalities.
 
 ## Forward Models
 
@@ -110,6 +71,48 @@ See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountai
 ```@example glacier_model
 using ECCO, OrdinaryDiffEq
 V=glacier_model.forward_problem(0.002)
+```
+
+
+## Adjoint Calculations
+
+### Simple air-sea flux calculation
+
+Simple air sea flux calculation and it's adjoint, obtained via Enzyme.
+
+```@example Fluxes
+using ECCO, Enzyme, Zygote, OrdinaryDiffEq
+
+ad=toy_problems.Enzyme_ex1()
+println("x=$(ad.x) adfx=$(ad.adx)")
+```
+
+### Bulk formulae
+
+Air sea flux calculation derived using standard bulk formulae algorithm, and it's adjoint, obtained via Enzyme.
+
+```@example Fluxes
+ad=toy_problems.Enzyme_ex2()
+println("x=$(ad.x) adfx=$(ad.adx)")
+```
+
+```@example Fluxes
+ad=toy_problems.Enzyme_ex3()
+println("x=$(ad.x) adfx=$(ad.adx)")
+```
+
+```@example Fluxes
+ad=toy_problems.Enzyme_ex4()
+println("x=$(ad.x) adfx=$(ad.adx)")
+```
+
+```@example Fluxes
+ad=toy_problems.ForwardDiff_ex1()
+println("x=$(ad.x) adfx=$(ad.adx)")
+```
+
+```@example Fluxes
+ad=Zygote_examples.Zygote_ex1()
 ```
 
 ## Optimization Examples
