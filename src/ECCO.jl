@@ -3,6 +3,7 @@ module ECCO
 # Write your package code here.
 import Climatology, MITgcm, Optim, AirSeaFluxes
 using DifferentiationInterface
+import Optim
 
 _autodiff_Reverse() = (@warn "undefined")
 _Reverse() = (@warn "undefined")
@@ -41,6 +42,23 @@ x=[300.,0.001,1.,10.]
 function calc_adjoint(f = y->y[1], backend=AutoForwardDiff(), x=[0.0])
     value_and_gradient(f, backend, x)
 end
+
+"""
+    ECCO.calc_optim()
+
+```
+using ECCO
+(f,x0,x1,result)=ECCO.calc_optim()
+```
+"""
+function calc_optim(f = y->(y[1]-1).^2, x0=[0.0])
+#    f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
+#    x0 = [0.0, 0.0]
+    result=Optim.optimize(f, x0)
+    x1=Optim.minimizer(result)
+    f,x0,x1,result
+end
+
 
 include("initial_examples.jl")
 include("mountain_glacier.jl")

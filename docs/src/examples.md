@@ -22,10 +22,10 @@ using ECCO
 (f,x0,x1,result)=toy_problems.optim_ex1()
 ```
 
-```@example Optim
-h,h!,x0,x1,result=toy_problems.optim_ex2()
-```
+## More Optimization
 
-```@example Optim
-h,h!,x0,x1,result=toy_problems.optim_ex3()
+```
+(f,x0,x1,result)=toy_problems.optim_ex1()
+(h,h!,x0,x1,result)=toy_problems.optim_ex2()
+(h,h!,x0,x1,result)=toy_problems.optim_ex3()
 ```
