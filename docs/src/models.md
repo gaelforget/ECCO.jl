@@ -1,5 +1,7 @@
 # Toy Models
 
+## Adjoint Calculations
+
 ### Simple air-sea flux calculation
 
 Simple air sea flux calculation and it's adjoint, obtained via Enzyme.
@@ -7,43 +9,41 @@ Simple air sea flux calculation and it's adjoint, obtained via Enzyme.
 ```@example Fluxes
 using ECCO, Enzyme, Zygote, OrdinaryDiffEq
 
-(f,f_ad,x)=toy_problems.Enzyme_ex1()
-f_x=f(x); f_ad_x=f_ad(x)[1][1]
-println("f(x)=$f_x adfx=$f_ad_x")
+ad=toy_problems.Enzyme_ex1()
+println("x=$(ad.x) adfx=$(ad.adx)")
 ```
 
-## Bulk formulae
+### Bulk formulae
 
 Air sea flux calculation derived using standard bulk formulae algorithm, and it's adjoint, obtained via Enzyme.
 
 ```@example Fluxes
-(f,f_ad,x)=toy_problems.Enzyme_ex2()
-f_x=f(x...); f_ad_x=f_ad(x...)
-println("f(x)=$(f_x) adfx=$(f_ad_x)")
+ad=toy_problems.Enzyme_ex2()
+println("x=$(ad.x) adfx=$(ad.adx)")
 ```
 
 ```@example Fluxes
-(f,f_ad,x,y)=toy_problems.Enzyme_ex3()
-f_x=f(x,y); f_ad_x=f_ad(x,y)
-println("f(x)=$(f_x) adfx=$(f_ad_x)")
+ad=toy_problems.Enzyme_ex3()
+println("x=$(ad.x) adfx=$(ad.adx)")
 ```
 
 ```@example Fluxes
-(f,f_ad,x,y)=toy_problems.Enzyme_ex4()
-f_x=f(x,y); f_ad_x=f_ad(x,y)
-println("f(x)=$(f_x) adfx=$(f_ad_x)")
+ad=toy_problems.Enzyme_ex4()
+println("x=$(ad.x) adfx=$(ad.adx)")
 ```
 
 ```@example Fluxes
-(x,adx)=toy_problems.ForwardDiff_ex1()
-println("x=$(x) adfx=$(adx)")
+ad=toy_problems.ForwardDiff_ex1()
+println("x=$(ad.x) adfx=$(ad.adx)")
 ```
 
 ```@example Fluxes
-(x,adx)=Zygote_examples.Zygote_ex1()
+ad=Zygote_examples.Zygote_ex1()
 ```
 
-## Lorenz
+## Forward Models
+
+### Lorenz
 
 See https://en.wikipedia.org/wiki/Lorenz_96_model
 
@@ -58,7 +58,7 @@ x,y,z=Lorenz_models.L63()
 lines(x,y,z)
 ```
 
-## Budyko-Sellers Energy Balance Model
+### Budyko-Sellers Energy Balance Model
 
 See [this tutorial](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/one-dim-ebm.html) for detailed explanations.
 
@@ -75,7 +75,7 @@ Axis(fig[3,1]); lines!(incr_t,incr)
 fig
 ```
 
-### Parameter Choices
+#### Parameter Choices
 
 From B. Rose notebook :
 
@@ -88,19 +88,19 @@ From Walsh and Rackauckas :
 - Figure 9. Equilibrium solutions of (2) with albedo function (34). Solid: η= 0.1. Dashed: η= 0.25. Dash-Dot: η= 0.4. 
   - Parameters: Q = 321,A = 167,B = 1.5,C = 2.25,M = 50,αw = 0.32,αi = 0.46,αs = 0.72,ρ= 0.35.
 
-### Earlier Implementations
+#### Earlier Implementations
 
 - <https://brian-rose.github.io/ClimateLaboratoryBook/courseware/one-dim-ebm.html>
 - <https://github.com/ECCO-Summer-School/ESS25-Team_FLOW>
 - <https://www.cise.ufl.edu/~luke.morris/2_4_2025/build/bsh/budyko_sellers_halfar/>
 
-### Related References
+#### Related References
 
 - discrete and continuous -- on the Budyko-Bellers energy balance climate model with ice line coupling -- James Walsh, Christopher Rackauckas -- doi:10.3934/dcdsb.2015.20.2187
 - Theory of Energy-Balance Climate Models -- Gerald R. North -- 1975 -- DOI: <https://doi.org/10.1175/1520-0469(1975)032<2033:TOEBCM>2.0.CO;2>
 - Predictability in a Solvable Stochastic Climate Model -- Gerald R. North and Robert F. Cahalan -- DOI: <https://doi.org/10.1175/1520-0469(1981)038%3C0504:PIASSC%3E2.0.CO;2>
 
-## Glacier
+### Glacier
 
 Simple, 1D mountain glacier model inspired from the book Fundamentals of Glacier Dynamics, 
 by CJ van der Veen, and which was translated to Julia by S Gaikwad.
