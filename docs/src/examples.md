@@ -23,11 +23,3 @@ f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
 x0 = [0.0, 0.0]
 op=ECCO.calc_optim(f,x0)
 ```
-
-## More Optimization
-
-```
-(f,x0,x1,result)=toy_problems.optim_ex1()
-(h,h!,x0,x1,result)=toy_problems.optim_ex2()
-(h,h!,x0,x1,result)=toy_problems.optim_ex3()
-```

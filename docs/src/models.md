@@ -111,3 +111,13 @@ See https://sicopolis.readthedocs.io/en/latest/AD/tutorial_tapenade.html#mountai
 using ECCO, OrdinaryDiffEq
 V=glacier_model.forward_problem(0.002)
 ```
+
+## Optimization Examples
+
+
+```@example more_optim
+using ECCO, Enzyme
+op=toy_problems.optim_ex1()
+op=toy_problems.optim_ex2()
+op=toy_problems.optim_ex3()
+```
