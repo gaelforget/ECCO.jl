@@ -7,13 +7,11 @@ using Test
 
     ## Enzyme
 
-    (f,f_ad,x)=toy_problems.Enzyme_ex1()
-    (f,f_ad,x)=toy_problems.Enzyme_ex2()
-    (f,f_ad,x,y)=toy_problems.Enzyme_ex3()
-    (f,f_ad,x,y)=toy_problems.Enzyme_ex4()
-    fc=f(x,y)
-    adx=f_ad(x,y);
-    @test isa(adx,Vector)
+    ad=toy_problems.Enzyme_ex1()
+    ad=toy_problems.Enzyme_ex2()
+    ad=toy_problems.Enzyme_ex3()
+    ad=toy_problems.Enzyme_ex4()
+    @test isa(ad.adx,Vector)
 
     toy_problems.f_tau([300.,0.001,1.,10.],[0.0])
     adx=toy_problems.f_tau_ad([300.,0.001,1.,10.],[0.0])
@@ -27,38 +25,39 @@ using Test
 
     ## ForwardDiff
 
-    (x,adx)=toy_problems.ForwardDiff_ex1()
-    @test isapprox(adx[2],458.8925283180731)
+    ad=toy_problems.ForwardDiff_ex1()
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     ## Zygote
 
-    (x,adx)=ECCO.Zygote_ex1()
-    @test isapprox(adx[2],458.8925283180731)
+    ad=ECCO.Zygote_ex1()
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     ## DifferentiationInterface
 
-    (x,adx)=ECCO.DifferentiationInterface_example.ex1()
-    @test isapprox(adx[2],458.8925283180731)
+    ad=ECCO.DifferentiationInterface_example.ex1()
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     backend = AutoMooncake(; config=nothing)
-    (x,adx)=ECCO.DifferentiationInterface_example.ex1(backend)
-    @test isapprox(adx[2],458.8925283180731)
+    ad=ECCO.DifferentiationInterface_example.ex1(backend)
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     ## Optimization
 
-    (f,x0,x1,result)=ECCO.calc_optim()
+    op1=ECCO.calc_optim()
+    op2=ECCO.calc_optim_ad()
 
-    (f,x0,x1,result)=toy_problems.optim_ex1()
-    dx=1e-4*(x0-x1)
-    @test f(x1)<f(x1+dx)
+    op=toy_problems.optim_ex1()
+    dx=1e-4*(op.x0-op.x1)
+    @test op.f(op.x1)<op.f(op.x1+dx)
 
-    (f,g!,x0,x1,result)=toy_problems.optim_ex2()
-    dx=1e-4*(x0-x1)
-    @test f(x1)<f(x1+dx)
+    op=toy_problems.optim_ex2()
+    dx=1e-4*(op.x0-op.x1)
+    @test op.f(op.x1)<op.f(op.x1+dx)
 
-    (f,g!,x0,x1,result)=toy_problems.optim_ex3()
-    dx=1e-4*(x0-x1)
-    @test f(x1)<f(x1+dx)
+    op=toy_problems.optim_ex3()
+    dx=1e-4*(op.x0-op.x1)
+    @test op.f(op.x1)<op.f(op.x1+dx)
 
     ##
     

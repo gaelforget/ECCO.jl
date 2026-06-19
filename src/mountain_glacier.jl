@@ -1,6 +1,7 @@
 
 module glacier_model
 import ECCO: _autodiff_Reverse, _Active, _Duplicated
+import ECCO: adjoint_result, optim_result
 
 @inline function update_h(h::Float64, b::Float64)
 	if h < b
