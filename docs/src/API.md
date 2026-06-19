@@ -1,4 +1,12 @@
 
+## Main
+
+```@docs
+ECCO.calc_adjoint
+ECCO.calc_optim
+```
+
+## More
 
 ```@index
 ```

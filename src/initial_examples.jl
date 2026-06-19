@@ -202,24 +202,24 @@ end
 module DifferentiationInterface_example
 
 using DifferentiationInterface
-using ForwardDiff: ForwardDiff
-#using Enzyme: Enzyme
-#using Zygote: Zygote  # AD backends you want to use
+import ECCO: calc_adjoint
+import AirSeaFluxes: bulkformulae
 
-import AirSeaFluxes: simpleflux, bulkformulae
+"""
+    ex1(backend=AutoForwardDiff())
 
-f(x) = sum(abs2, x)
+```
+using ECCO, Mooncake
+using ECCO.DifferentiationInterface_example.DifferentiationInterface
 
-x = [1.0, 2.0]
-
-value_and_gradient(f, AutoForwardDiff(), x) # returns (5.0, [2.0, 4.0]) with ForwardDiff.jl
-#value_and_gradient(f, AutoEnzyme(), x) # returns (5.0, [2.0, 4.0]) with Enzyme.jl
-#value_and_gradient(f, AutoZygote(), x) # returns (5.0, [2.0, 4.0]) with Zygote.jl
-
-DifferentiationInterface_ex1() = begin
+backend = AutoMooncake(; config=nothing)
+(x,adx)=ECCO.DifferentiationInterface_example.ex1(backend)
+```
+"""
+function ex1(backend=AutoForwardDiff())
     f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
     x=[300.,0.001,1.,10.]
-    value_and_gradient(f, AutoForwardDiff(), x)
+    calc_adjoint(f, backend, x)
 end
 
 end
