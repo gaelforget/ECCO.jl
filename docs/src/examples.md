@@ -1,5 +1,5 @@
 
-# Generic Adjoint Calculation
+## Adjoint Calculation
 
 Using `DifferentiationInterface.jl`
 
@@ -14,7 +14,7 @@ backend = AutoMooncake(; config=nothing)
 ad=ECCO.calc_adjoint(f,backend,x)
 ```
 
-# Optimization
+## Optimization
 
 ```@example Optim
 using ECCO
