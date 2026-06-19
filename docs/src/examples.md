@@ -11,8 +11,7 @@ f(x)=ECCO.AirSeaFluxes.bulkformulae(x[1],x[2],x[3],x[4]).hl
 x=[300.,0.001,1.,10.]
 backend = AutoMooncake(; config=nothing)
 
-#(x,adx)=ECCO.DifferentiationInterface_example.ex1(backend)
-(x,adx)=ECCO.calc_adjoint(f,backend,x)
+ad=ECCO.calc_adjoint(f,backend,x)
 ```
 
 # Optimization
@@ -22,7 +21,7 @@ using ECCO
 
 f(x) = (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
 x0 = [0.0, 0.0]
-(_,_,x1,result)=ECCO.calc_optim(f,x0)
+op=ECCO.calc_optim(f,x0)
 ```
 
 ## More Optimization

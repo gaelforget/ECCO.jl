@@ -7,13 +7,11 @@ using Test
 
     ## Enzyme
 
-    (f,f_ad,x)=toy_problems.Enzyme_ex1()
-    (f,f_ad,x)=toy_problems.Enzyme_ex2()
-    (f,f_ad,x,y)=toy_problems.Enzyme_ex3()
-    (f,f_ad,x,y)=toy_problems.Enzyme_ex4()
-    fc=f(x,y)
-    adx=f_ad(x,y);
-    @test isa(adx,Vector)
+    ad=toy_problems.Enzyme_ex1()
+    ad=toy_problems.Enzyme_ex2()
+    ad=toy_problems.Enzyme_ex3()
+    ad=toy_problems.Enzyme_ex4()
+    @test isa(ad.adx,Vector)
 
     toy_problems.f_tau([300.,0.001,1.,10.],[0.0])
     adx=toy_problems.f_tau_ad([300.,0.001,1.,10.],[0.0])
@@ -27,13 +25,13 @@ using Test
 
     ## ForwardDiff
 
-    (x,adx)=toy_problems.ForwardDiff_ex1()
-    @test isapprox(adx[2],458.8925283180731)
+    ad=toy_problems.ForwardDiff_ex1()
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     ## Zygote
 
-    (x,adx)=ECCO.Zygote_ex1()
-    @test isapprox(adx[2],458.8925283180731)
+    ad=ECCO.Zygote_ex1()
+    @test isapprox(ad.adx[2],458.8925283180731)
 
     ## DifferentiationInterface
 

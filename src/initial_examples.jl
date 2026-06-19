@@ -3,8 +3,7 @@ module toy_problems
 
 import Optim, ForwardDiff, AirSeaFluxes
 import ECCO: _autodiff_Reverse, _Active, _Duplicated
-
-#export Enzyme_ex1, Enzyme_ex2, Enzyme_ex3, Enzyme_ex4
+import ECCO: adjoint_result, optim_result
 
 import AirSeaFluxes: simpleflux, bulkformulae
 
@@ -25,7 +24,8 @@ function Enzyme_ex1()
     flux(x)=simpleflux(x[1],Ca,pisvel)
     flux_ad(x)=_autodiff_Reverse(flux, _Active(x[1]))
 
-    (flux,flux_ad,[Co])
+    #(flux,flux_ad,[Co])
+    adjoint_result(Co,flux_ad([Co]))
 end
 
 ## univariate example 2
@@ -53,7 +53,7 @@ function Enzyme_ex2()
     f_evap(x,y)=bulkformulae(atemp,aqh,x,y).evap
     f_evap_ad(x,y)=_autodiff_Reverse(f_evap, _Active(x), _Active(y))
 
-    (f_evap,f_evap_ad,(speed, sst))
+    adjoint_result((speed, sst),f_evap_ad(speed, sst))
 end
 
 ## multivariate examples
@@ -88,7 +88,11 @@ f(x,y)
 f_ad(x,y)
 ```    
 """
-Enzyme_ex3() = (f_tau,f_tau_ad,[300.,0.001,1.,10.],[0.0])
+Enzyme_ex3() = begin
+    a=[300.,0.001,1.,10.]
+    b=[0.0]
+    adjoint_result((a, b),f_tau_ad(a, b))
+end
 
 """
     toy_problems.Enzyme_ex4()
@@ -100,7 +104,11 @@ f(x,y)
 f_ad(x,y)
 ```    
 """
-Enzyme_ex4() = (f_hl,f_hl_ad,[300.,0.001,1.,10.],[0.0])
+Enzyme_ex4() = begin
+    a=[300.,0.001,1.,10.]
+    b=[0.0]
+    adjoint_result((a, b),f_hl_ad(a, b))
+end
 
 ## ForwardDiff
 
@@ -116,7 +124,7 @@ ForwardDiff_ex1() = begin
     f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
     x=[300.,0.001,1.,10.]
     adx=ForwardDiff.gradient(f, x)
-    (x,adx)
+    adjoint_result(x,adx)
 end
 
 ## Optim
@@ -193,7 +201,7 @@ Zygote_ex1() = begin
     f(x)=bulkformulae(x[1],x[2],x[3],x[4]).hl
     x=[300.,0.001,1.,10.]
     adx=f'(x)
-    (x,adx)
+    adjoint_result(x,adx)
 end
 
 end
